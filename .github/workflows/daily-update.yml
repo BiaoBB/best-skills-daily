@@ -1,0 +1,52 @@
+name: 每日自动更新 Best Skills 中文手账并发布
+
+on:
+  schedule:
+    # UTC 02:00 = 北京时间每天早上 10:00（避开上游 UTC 01:00 刷新窗口）
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库代码
+        uses: actions/checkout@v4
+
+      - name: 配置 Python 环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 拉取最新榜单并生成 index.html
+        run: |
+          python build.py
+          mkdir -p site
+          cp index.html site/index.html
+
+      - name: 配置 GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: 上传静态站点产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+      - name: 发布到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
