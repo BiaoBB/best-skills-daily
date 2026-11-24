@@ -2,8 +2,8 @@ name: 每日自动更新 Best Skills 中文手账并发布
 
 on:
   schedule:
-    # UTC 02:00 = 北京时间每天早上 10:00（避开上游 UTC 01:00 刷新窗口）
-    - cron: "0 2 * * *"
+    # UTC 02:17 = 北京时间每天早上 10:17（错开全球整点高峰与上游 UTC 01:00 刷新窗口）
+    - cron: "17 2 * * *"
   workflow_dispatch:
   push:
     branches:
@@ -19,17 +19,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: 检出仓库代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 配置 Python 环境
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -40,13 +37,33 @@ jobs:
           cp index.html site/index.html
 
       - name: 配置 GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: 上传静态站点产物
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./site
 
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 等待产物元数据同步
+        run: sleep 5
+
       - name: 发布到 GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        continue-on-error: true
+        uses: actions/deploy-pages@v5
+
+      - name: 首次发布失败时等待重试
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 20
+
+      - name: 自动重试发布到 GitHub Pages
+        id: deployment_retry
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v5

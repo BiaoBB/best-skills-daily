@@ -77,21 +77,28 @@ def fmt_wan(n) -> str:
     return f"{n:,}"
 
 
+def has_zh(text: str) -> bool:
+    return bool(re.search(r"[\u4e00-\u9fff]", text or ""))
+
+
 def lookup_zh(row: dict, zh_dict: dict, is_clone: bool) -> str:
     by_src = zh_dict.get("by_source_skill", {})
     by_skill = zh_dict.get("by_skill_fallback", {})
     source = row.get("source", "")
     skill = row.get("skill", "")
     cat_name = CAT_ZH.get(row.get("cat", "other"), "其他")
+    raw_zh = (row.get("raw_zh") or "").strip()
 
     if is_clone and f"superpowers:{skill}" in by_src:
         return by_src[f"superpowers:{skill}"]
     if f"{source}:{skill}" in by_src:
         return by_src[f"{source}:{skill}"]
-    if row.get("raw_zh"):
-        return row["raw_zh"][:140]
+    if has_zh(raw_zh):
+        return raw_zh[:140]
     if skill in by_skill:
         return by_skill[skill]
+    if raw_zh:
+        return raw_zh[:140]
     return f"新上榜技能（{cat_name}），暂未收录进本地中文词典，所属仓库：{source or row.get('vendor') or '未知'}。"
 
 
@@ -379,7 +386,27 @@ def main():
 
         raw_zh = (r.get("description_zh") or "").strip()
         raw_en = (r.get("description") or "").strip()
-        desc = raw_zh[:130] if raw_zh else (raw_en[:130] if raw_en else "暂无平台简介。")
+        if has_zh(raw_zh):
+            desc = raw_zh[:130]
+        else:
+            src = r.get("source_skillssh") or r.get("vendor") or ""
+            is_clone = (src in known_clones) or src.endswith("/superpowers")
+            tmp = {
+                "skill": r.get("skill", ""),
+                "vendor": r.get("vendor", ""),
+                "source": src,
+                "cat": r.get("category") or "other",
+                "raw_zh": "",
+            }
+            dict_desc = lookup_zh(tmp, zh_dict, is_clone)
+            if not dict_desc.startswith("新上榜技能"):
+                desc = dict_desc
+            elif raw_zh:
+                desc = raw_zh[:130]
+            elif raw_en:
+                desc = raw_en[:130]
+            else:
+                desc = "暂无平台简介。"
         rs20.append({
             "rank": to_int(r.get("rank")) or 0,
             "skill": r.get("skill", ""),

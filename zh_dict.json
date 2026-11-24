@@ -92,6 +92,20 @@
     "microsoft/azure-skills:azure-resource-lookup": "微软官方：检索查询现有 Azure 订阅与资源状态。",
     "microsoft/azure-skills:azure-deploy": "微软官方：执行 Azure 云应用与基础设施部署。",
     "microsoft/azure-skills:airunway-aks-setup": "微软官方：快速搭建面向 AI 负载的 AKS 运行环境。",
+    "microsoft/azure-skills:discover-azure-skills": "微软官方：按 Azure 任务自动检索并推荐可安装的官方技能与插件。",
+    "microsoft/azure-skills:azure-resource-visualizer": "微软官方：分析 Azure 资源组依赖关系，自动生成 Mermaid 架构拓扑图。",
+    "microsoft/azure-skills:azure-quotas": "微软官方：查询与管理 Azure 各区域配额、vCPU 限额与容量余量，辅助部署选区。",
+    "microsoft/azure-skills:azure-app-onboard-prereq": "微软官方：应用上云前代码体检，检查依赖兼容性、构建健康度与部署阻碍项。",
+    "microsoft/azure-skills:azure-app-onboard": "微软官方：端到端应用上云编排器，从架构选型、费用预估到基础设施生成与部署一站搞定。",
+    "microsoft/azure-skills:azure-aigateway": "微软官方：将 Azure API Management 配为 AI 网关，管控大模型与 MCP 工具的限流、安全与成本。",
+    "microsoft/azure-skills:azure-reliability": "微软官方：评估并加固 Azure PaaS 应用可靠性，排查可用区冗余、健康探针与容灾风险。",
+    "microsoft/azure-skills:azure-messaging": "微软官方：排查并修复 Azure Event Hubs 与 Service Bus 消息队列 SDK 的连接及消费故障。",
+    "microsoft/azure-skills:azure-cloud-migrate": "微软官方：跨云迁移评估与代码转换，支持将 AWS、GCP、Heroku 等工作负载迁移至 Azure。",
+    "microsoft/azure-skills:azure-compute": "微软官方：Azure 虚拟机（VM）与规模集（VMSS）选型、估价、自动扩容及容量预留管理。",
+    "uizze.sh:ui-taste": "UIZZE 审美技能：为 AI 编程助手提供真实应用界面参考、字体与图标，摆脱通用模板风。",
+    "uizze/uizze:uizze-ui": "UIZZE 官方 UI 技能：提供界面设计规范与真实产品参考，让 AI 写出有设计感的前端页面。",
+    "mattpocock/skills:retro": "对编程会话做复盘，从代码导航与自动化检查维度改进 AI 编程助手的工作环境。",
+    "mattpocock/skills:triage": "用结构化分诊流程分类核验 Issue 与外部 PR，必要时追问细节并输出可供 AI 直接动工的简报。",
     "browser-use/browser-use:browser-use": "老牌开源 AI 浏览器自动化操作技能。"
   },
   "by_skill_fallback": {
@@ -102,6 +116,7 @@
     "skill-creator": "Anthropic 官方教你制作高质量 Agent Skill 的元技能。",
     "frontend-design": "前端页面视觉与排版设计指南，消除 AI 模板感。",
     "agent-browser": "轻量命令行浏览器自动化工具，供 Agent 读取网页元素并交互。",
-    "find-skills": "Agent 技能搜索与自动发现工具。"
+    "find-skills": "Agent 技能搜索与自动发现工具。",
+    "proactive-agent": "把 AI Agent 从被动执行者升级为主动搭档，支持需求预判、WAL 记忆协议、工作缓冲与定时自驱进化。"
   }
 }
