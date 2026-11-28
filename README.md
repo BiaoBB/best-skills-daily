@@ -1,5 +1,10 @@
 # AI Agent 技能每日选品手账（自动更新版）
 
+> [!TIP]
+> **👉 在线打开网页**：[点击直接进入《AI Agent 技能每日选品手账》](https://biaobb.github.io/best-skills-daily/)
+>
+> 直达网址：https://biaobb.github.io/best-skills-daily/ （支持电脑、iPad、手机浏览器直接访问）
+
 每天北京时间早上 10:00 自动从 [LinklyAI/best-skills](https://github.com/LinklyAI/best-skills) 拉取最新榜单数据，结合本地中文词典生成单文件静态网页，并自动发布到 GitHub Pages。
 
 ## 文件说明
